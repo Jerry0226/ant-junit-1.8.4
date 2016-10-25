@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<project xmlns:jacoco="antlib:org.jacoco.ant" name="ZSmartCI_Junit" basedir="." default="build-no-report"> 
+
+ <property name="result.dir" value="F:\jacoco\NewJacoco\result"/>
+ <property name="report.dir" value="F:\jacoco\NewJacoco\report"/>
+ 
+  <taskdef uri="antlib:org.jacoco.ant" resource="org/jacoco/ant/antlib.xml"> 
+    <classpath path="./antlib/jacocoant.jar"/> 
+  </taskdef> 
+   
+  <target name="jacocoJunit"> 
+    <jacoco:coverage output="tcpserver" address="10.45.14.34" port="6100" includes="chm.test.*"> 
+      <junit printsummary="on" fork="true" showoutput="true" junitCoverDir="F:/jacoco/NewJacoco/exec" jacocoPort="6100" jacocoAddress="10.45.14.34"> 
+        <classpath> 
+          <path> 
+            <fileset dir="D:\apache-tomcat-6\apache-tomcat-6.0.14\webapps\ZCIP\WEB-INF\lib">
+              <include name="**/*.jar"/>
+            </fileset>
+            
+            <fileset dir="F:\github\junit\lib">
+              <include name="**/*.jar"/>
+            </fileset>
+          </path>  
+          <pathelement path="F:\neonWorkspaces\ZCIPTest\bin"/>
+        </classpath>  
+        <formatter type="xml"/>  
+        <batchtest todir="${result.dir}"> 
+          <fileset dir="F:\neonWorkspaces\ZCIPTest\bin">
+            <include name="**/unittest/zcipserver/**/*.class"/>
+          </fileset>
+        </batchtest> 
+      </junit> 
+    </jacoco:coverage>  
+    <!-- junit report -->  
+    <junitreport todir="${report.dir}"> 
+      <fileset dir="${result.dir}"> 
+        <include name="TEST-*.xml"/> 
+      </fileset>  
+      <report format="frames" todir="${report.dir}"/> 
+    </junitreport> 
+  </target>  
+  
+  
+  <!-- 5.0 build-all -->  
+  <target name="build-no-report" depends="jacocoJunit"/> 
+</project>
